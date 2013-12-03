@@ -12,5 +12,13 @@ RUN echo 'root:ansible' |chpasswd
 RUN easy_install pip
 RUN pip install ansible
 
+
+# Set locale (fix the locale warnings)
+RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || :
+
+# Copy the files into the container
+ADD . /src
+
 EXPOSE 22
-CMD    /usr/sbin/sshd -D
+CMD ["/bin/bash", "/src/startup.sh"]
+
