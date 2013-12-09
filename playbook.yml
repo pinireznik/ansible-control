@@ -1,0 +1,9 @@
+
+- hosts: piniubuntu
+  tasks:
+  - name: one container
+    docker: image=preznik/ansible-control-test count=5
+  - name: print IPs
+    debug: msg="Returned Name={{item.Name}}, Hostname={{item.Config.Hostname}}, IP={{item.NetworkSettings.IPAddress}}"
+    with_items: docker_containers
+  - shell: /bin/ls /
