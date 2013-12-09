@@ -15,6 +15,10 @@ adduser docker sudo
 # Set the default shell as bash for docker user.
 chsh -s /bin/bash docker
 
+touch /home/docker/db_address
+echo IP=$DB_PORT_3306_TCP_PORT >> /home/docker/db_address
+echo Address=$DB_PORT_3306_TCP_ADDR >> /home/docker/db_address
+
 #Set all the files and subdirectories from /home/docker with docker permissions. 
 chown -R docker:docker /home/docker/*
 

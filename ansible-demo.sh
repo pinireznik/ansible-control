@@ -1,6 +1,8 @@
 #!/bin/bash
 
 ANSIBLE_IMAGE=preznik/ansible-control-test
+NODES="ansible node1 node2"
+
 
 	case "$1" in
                 -h|--help)
@@ -12,28 +14,29 @@ ANSIBLE_IMAGE=preznik/ansible-control-test
                         exit 0
                         ;;
                 start)
-			for NODES in ansible node1 node2
+			for NODE in ${NODES}
 			do
-        			echo "STARTING ${NODES}"
-        			docker run -d -name ${NODES} ${ANSIBLE_IMAGE}
-				docker inspect ${NODES} | grep IPAddress
+        			echo "STARTING ${NODE}"
+        			docker run -d -name ${NODE} ${ANSIBLE_IMAGE}
+				docker inspect ${NODE} | grep IPAddress
 			done
+			#docker run -d -link node1 -link node2 -name ansible ${ANSIBLE_IMAGE}
                         shift
                         ;;
                 stop)
-                        for NODES in ansible node1 node2
+                        for NODE in ${NODES}
                         do
-                                echo "STOPPING ${NODES}"
-                                docker stop ${NODES}
+                                echo "STOPPING ${NODE}"
+                                docker stop ${NODE}
                         done
                         shift
                         ;;
                 clean)
-                        for NODES in ansible node1 node2
+                        for NODE in ${NODES}
                         do
-                                echo "STOPPING AND CLEANNING ${NODES}"
-				docker stop ${NODES}
-                                docker rm ${NODES}
+                                echo "STOPPING AND CLEANNING ${NODE}"
+				docker kill ${NODE}
+                                docker rm ${NODE}
                         done
 			shift
                         ;;
